@@ -97,6 +97,7 @@ docker --version
 sudo docker run hello-world
 ```
 --- 
+
 # use the following commands for automation of the above:
 ```bash
 sudo nano k.sh
