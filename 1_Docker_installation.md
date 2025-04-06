@@ -97,13 +97,13 @@ docker --version
 sudo docker run hello-world
 ```
 
-## use the following commands for automation of the above:
+use the following commands for automation of the above:
 ```bash
 sudo nano k.sh
 ```
-## copy the above mentioned script inside "k.sh"
+copy the above mentioned script inside "k.sh"
 
-## then use the use the following command to execute the file (k.sh)
+then use the use the following command to execute the file (k.sh)
 ```bash
 sudo bash k.sh
 ```
