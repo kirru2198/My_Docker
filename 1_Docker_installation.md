@@ -96,7 +96,6 @@ docker --version
 # Verify that the installation is successful by running the hello-world image:
 sudo docker run hello-world
 ```
---- 
 
 ## use the following commands for automation of the above:
 ```bash
