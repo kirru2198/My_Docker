@@ -68,6 +68,7 @@ sudo docker run hello-world
 ```
 
 If everything is set up correctly, you should see a success message confirming that Docker is installed and running.
+
 ---
 Here's the properly formatted script for installing Docker on Ubuntu:
 
