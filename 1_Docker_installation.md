@@ -43,8 +43,13 @@ Install Docker, the Docker CLI, containerd, Docker Buildx plugin, and Docker Com
 ```bash
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+## 4. Start and enable Docker service:
+    ```bash
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    ```
 
-## 4. Verify Installation
+## 5. Verify Installation
 
 Check the installed version of Docker to verify the installation:
 
@@ -52,7 +57,7 @@ Check the installed version of Docker to verify the installation:
 docker --version
 ```
 
-## 5. Run the Docker "Hello World" Image
+## 6. Run the Docker "Hello World" Image
 
 To verify that Docker is working properly, run the `hello-world` image:
 
