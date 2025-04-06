@@ -68,8 +68,10 @@ sudo docker run hello-world
 ```
 
 If everything is set up correctly, you should see a success message confirming that Docker is installed and running.
+---
+Here's the properly formatted script for installing Docker on Ubuntu:
 
----markdown
+```bash
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
@@ -92,6 +94,7 @@ docker --version
 
 # Verify that the installation is successful by running the hello-world image:
 sudo docker run hello-world
+```
 --- 
 # use the following commands for automation of the above:
 ```bash
