@@ -69,7 +69,7 @@ sudo docker run hello-world
 
 If everything is set up correctly, you should see a success message confirming that Docker is installed and running.
 
----
+---markdown
 # Add Docker's official GPG key:
 sudo apt-get update
 sudo apt-get install ca-certificates curl
