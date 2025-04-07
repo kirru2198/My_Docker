@@ -194,4 +194,139 @@ app.py  requirements.txt
 
 So, the `/app` directory is located **inside the container**, and that's where your application files are copied during the build process.
 
+---
+Here's the simplified process of building and running Docker images and containers, including EC2 setup and port mapping, formatted in markdown with descriptions and maintenance content.
+
+# Simplified Process of Building and Running Docker Image and Container
+
+This guide will break down the steps of building a Docker image, running it as a container, and setting up the necessary EC2 instance configuration and port mapping to make the application accessible.
+
+## 1. Build the Docker Image
+
+To create a Docker image from a Dockerfile, use the `docker build` command. This command takes the Dockerfile and creates an image with all the necessary components.
+
+```bash
+docker build -t <image-name> .
+```
+
+- `-t <image-name>`: This option allows us to tag the image with a specific name (e.g., `simple-web-app`).
+- `.`: This refers to the current directory, where the `Dockerfile` is located. It tells Docker to look in this directory for the Dockerfile.
+
+### What Happens During Build:
+- Docker reads each instruction in the Dockerfile, creating layers of the image.
+- For example:
+  - Downloading Python
+  - Creating directories
+  - Copying files
+  - Installing dependencies (like Flask)
+  
+Each instruction in the Dockerfile creates a layer, and Docker builds the image step by step.
+
+## 2. Check the Docker Images
+
+After building the Docker image, you can verify that the image was successfully created using:
+
+```bash
+docker images
+```
+
+This command will show a list of all available Docker images, including the one you just created (e.g., `simple-web-app`).
+
+## 3. Run the Docker Container
+
+To run the image as a container, use the `docker run` command:
+
+```bash
+docker run -p 5000:5000 <image-name>
+```
+
+- `-p 5000:5000`: This flag maps port 5000 inside the container to port 5000 on your host machine (e.g., EC2 instance). This allows us to access the application via port 5000 on the EC2 public IP.
+- `<image-name>`: The name of the image to run (e.g., `simple-web-app`).
+
+This command starts the container and runs the application inside it.
+
+### What Happens During `docker run`:
+- The container is launched from the image you created.
+- The application inside the container starts running, and it's exposed on port 5000.
+
+## 4. Access the Application
+
+To access the application running inside the container, you need to use the **EC2 instance's public IP** and append the exposed port (5000). 
+
+In a browser, go to:
+
+```
+http://<EC2-ip>:5000
+```
+
+### Troubleshooting (Timeout Issue):
+If you encounter a **timeout** when accessing the application, it's likely due to the **security group** settings in AWS. By default, security groups block inbound traffic on most ports.
+
+### Fixing the Timeout (Open Port 5000 in Security Group):
+
+1. Go to the **AWS Console** and open the **EC2 Dashboard**.
+2. Under **Network & Security**, click on **Security Groups**.
+3. Select the security group attached to your EC2 instance.
+4. In the **Inbound Rules** tab, add a new rule:
+   - **Type**: Custom TCP Rule
+   - **Port Range**: 5000
+   - **Source**: Anywhere (0.0.0.0/0) or your specific IP range.
+5. Save the changes to allow traffic on port 5000.
+
+Once the security group is updated, you should be able to access the application at `http://<EC2-ip>:5000`.
+
+---
+
+# EC2 Setup and Port Mapping
+
+## 1. EC2 Instance:
+
+We have an EC2 instance running, and inside this instance, a Docker container is running our application. The application listens on port **5000**.
+
+## 2. Security Group:
+
+The EC2 instance has a **security group** attached to it, which controls which ports can receive traffic. Initially, port 5000 wasn't open, so accessing the app resulted in a timeout.
+
+Once we updated the security group to allow inbound traffic on port 5000, we were able to access the application.
+
+### Port Mapping:
+- When traffic hits port 5000 on the EC2 instance, it is forwarded to the container running the app.
+- The `docker run -p 5000:5000` command maps port 5000 in the container to port 5000 on the EC2 instance.
+
+---
+
+# Running a Node.js Application in Another Container
+
+If you are running a **Node.js** application in a separate container that listens on **port 3000**, follow these steps:
+
+1. **Run the Node.js container**:
+   - The command to run the container would be similar to:
+     ```bash
+     docker run -p 3000:3000 <node-app-image>
+     ```
+2. **Update the EC2 security group**:
+   - Open port 3000 in the security group to allow access to the Node.js application.
+
+### Fixing Missing Port in Dockerfile:
+If the application isn't accessible (you might see a timeout), check the **Dockerfile** for the Node.js app. It’s important to expose the correct port (3000 in this case) within the Dockerfile using the `EXPOSE` directive:
+
+```dockerfile
+EXPOSE 3000
+```
+
+### Final Thoughts:
+- By following these steps, you ensure that your Dockerized application (whether Python, Node.js, or others) is properly exposed and accessible from outside the container on an EC2 instance.
+- Always make sure to configure security group rules to open the necessary ports for external access.
+
+---
+
+## Summary
+
+1. **Build the Docker Image**: Create an image using `docker build`.
+2. **Run the Docker Container**: Start the container with `docker run -p 5000:5000`.
+3. **Access the Application**: Use `http://<EC2-ip>:5000` to access the app.
+4. **Fix Timeout Issue**: Open the required ports (5000, 3000, etc.) in the EC2 security group.
+5. **Node.js App**: Expose and run the Node.js application in a separate container by opening port 3000.
+
+By following these steps, you'll be able to run both Python and Node.js applications inside Docker containers on an EC2 instance, and access them from the outside world with the right port mappings and security group configurations.
 
