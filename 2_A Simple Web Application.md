@@ -1,4 +1,4 @@
-Here's a step-by-step guide in markdown format, with descriptions and commands, for creating and running a Python web application using Docker:
+Here's a step-by-step guide, with descriptions and commands, for creating and running a Python web application using Docker:
 
 # Docker and Flask: A Simple Web Application
 
