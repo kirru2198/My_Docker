@@ -143,6 +143,55 @@ In this guide, we:
 5. Optionally, pushed the image to Docker Hub for easy sharing and deployment.
 
 Docker provides a powerful way to ensure that applications are consistent across environments, making them highly portable and scalable.
+
+---
+Directory Structure 
+---
+Here's how your directory structure will look **before** and **after** executing the Dockerfile:
+
+### **Before executing the Dockerfile**
+
+At this stage, you will have the following files in your `my_app` directory:
+
+```
+my_app/
+│
+├── app.py            # The Flask application code
+├── requirements.txt  # The list of dependencies (Flask)
+└── Dockerfile        # The Dockerfile to build the container image
 ```
 
-This markdown guide should be a complete overview for anyone learning how to create a simple Flask app and containerize it with Docker. If you need further details or explanations, feel free to ask!
+### **After executing the Dockerfile**
+
+Once you execute the Dockerfile by building and running the Docker container, the directory structure inside the container will look like this:
+
+```
+/app/  (inside the container)
+│
+├── app.py            # The Flask application code
+├── requirements.txt  # The list of dependencies (Flask)
+└── (Docker image filesystem)  # Other layers from the base image and installed dependencies (like Python and Flask)
+```
+
+### **Explanation**:
+
+- **Before Execution**: The files are just on your local system, inside the `my_app` directory.
+- **After Execution**: Once the Dockerfile is executed, the files will be copied into the `/app` directory inside the container. The Docker image will have its base (from the `python:3.8-slim` image), your Flask application files, and installed dependencies like Python and Flask.
+
+This allows you to run the app inside the container with all its dependencies, without needing to worry about conflicts with your host system.
+
+---
+
+### Example:
+
+If you run `docker exec -it <container_id> /bin/bash` to enter the running container, you can navigate to `/app` to see the application files:
+
+```bash
+root@<container_id>:/# cd /app
+root@<container_id>:/app# ls
+app.py  requirements.txt
+```
+
+So, the `/app` directory is located **inside the container**, and that's where your application files are copied during the build process.
+
+
