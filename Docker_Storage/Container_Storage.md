@@ -15,3 +15,6 @@ Here are the key points to remember:
 - The writable layer is tied to the container's lifecycle and cannot be moved elsewhere. 
 - Any data written is considered part of that specific container.
 
+<img width="503" alt="image" src="https://github.com/user-attachments/assets/b74dfc0d-2607-4b04-a2a4-6ae903b8cc55" />
+
+---
