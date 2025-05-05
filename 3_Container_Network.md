@@ -46,6 +46,20 @@ sudo apt-get install docker.io
 ### 2. Network Interfaces and Docker0:
 When Docker is installed, it creates a virtual **docker0** bridge network. This bridge allows containers to connect to each other and the outside world. The host machine retains its **ens5** NIC for general network connectivity.
 
+- In order to list all Docker networks on your system use the following command:
+```
+docker network ls
+```
+You’ll see a table like this:
+
+| NETWORK ID | NAME       | DRIVER | SCOPE |
+| ---------- | ---------- | ------ | ----- |
+| 123abc     | bridge     | bridge | local |
+| 456def     | host       | host   | local |
+| 789ghi     | none       | null   | local |
+| ...        | my\_custom | bridge | local |
+
+
 ### 3. Inspecting Docker Networks:
 To inspect the default Docker bridge network, use the following command:
 ```bash
