@@ -22,25 +22,17 @@ or
 ```
 ip addr show
 ```
-- before installing Docker (on EC2 instance)
-
-<img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
-
 - When Docker is installed, you'll see the **docker0** interface (used for container communication).
-> - in order to install Docker use following Commands:
-> - ```
->   sudo apt-get install
->   sudo apt install docker.io
->   ```
-
-<img width="955" alt="image" src="https://github.com/user-attachments/assets/6cbc08fe-2d83-4d00-a615-8abbca2adcf1" />
-
 - Each running container gets a **VETH** interface connected to **docker0**.
 
 ## Docker Installation and Network Setup
 
 ### 1. Installing Docker:
-Before Docker is installed, your EC2 instance only has the **ENS5** NIC and the **loopback address**. After Docker installation:
+Before Docker is installed, your EC2 instance only has the **ENS5** NIC and the **loopback address**. 
+
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
+
+After Docker installation:
 - A new virtual bridge network interface **docker0** is created.
   
 To install Docker:
@@ -49,8 +41,10 @@ sudo apt-get update
 sudo apt-get install docker.io
 ```
 
+<img width="955" alt="image" src="https://github.com/user-attachments/assets/6cbc08fe-2d83-4d00-a615-8abbca2adcf1" />
+
 ### 2. Network Interfaces and Docker0:
-When Docker is installed, it creates a virtual **docker0** bridge network. This bridge allows containers to connect to each other and the outside world. The host machine retains its **ENS5** NIC for general network connectivity.
+When Docker is installed, it creates a virtual **docker0** bridge network. This bridge allows containers to connect to each other and the outside world. The host machine retains its **ens5** NIC for general network connectivity.
 
 ### 3. Inspecting Docker Networks:
 To inspect the default Docker bridge network, use the following command:
