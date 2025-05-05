@@ -33,7 +33,7 @@ Before Docker is installed, your EC2 instance only has the **ens5** NIC and the 
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
 
 After Docker installation:
-- A new virtual bridge network interface **docker0** is created.
+- A new virtual bridge network interface **docker0** is created. (docker0 is network driver)
   
 To install Docker:
 ```bash
