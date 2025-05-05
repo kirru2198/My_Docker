@@ -14,4 +14,4 @@ When using volumes, you can create them with the command `docker volume create <
 
 You can mount a volume to a container using the command `docker run -d --mount source=<volume_name>,target=<container_directory> <image_name>`. This allows the container to access the data stored in the volume.
 
-In summary, bind mounts and volumes both solve the problem of data persistence in containers, but volumes offer better management and flexibility. If you have any questions, please leave a timestamp in the comments, and I'll be happy to help. Thank you for watching, and I'll see you in the next video!
+In summary, bind mounts and volumes both solve the problem of data persistence in containers, but volumes offer better management and flexibility. 
