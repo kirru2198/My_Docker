@@ -116,4 +116,8 @@ Great! Here's how the **loopback address** (`127.0.0.1`) behaves in **Docker net
 | To reach the host from container | Use `host.docker.internal` (or other methods on Linux) |
 | Container to container           | Use container name in user-defined network             |
 
-Would you like a diagram to visualize this better?
+---
+
+### "If I install software on my laptop, can I test it from a different laptop using the loopback IP address?"
+
+
