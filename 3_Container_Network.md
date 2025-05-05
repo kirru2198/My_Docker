@@ -28,7 +28,7 @@ ip addr show
 ## Docker Installation and Network Setup
 
 ### 1. Installing Docker:
-Before Docker is installed, your EC2 instance only has the **ENS5** NIC and the **loopback address**. 
+Before Docker is installed, your EC2 instance only has the **ens5** NIC and the **loopback address**. 
 
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
 
