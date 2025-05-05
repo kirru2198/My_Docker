@@ -27,6 +27,11 @@ ip addr show
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
 
 - When Docker is installed, you'll see the **docker0** interface (used for container communication).
+> - in order to install Docker use following Commands:
+> - ```
+>   sudo apt-get install
+>   sudo apt install docker.io
+>   ```
 
 <img width="955" alt="image" src="https://github.com/user-attachments/assets/6cbc08fe-2d83-4d00-a615-8abbca2adcf1" />
 
