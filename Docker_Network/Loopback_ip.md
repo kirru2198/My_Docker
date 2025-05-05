@@ -116,4 +116,45 @@ Great! Here's how the **loopback address** (`127.0.0.1`) behaves in **Docker net
 
 ### "If I install software on my laptop, can I test it from a different laptop using the loopback IP address?"
 
+Good question — and the short answer is:
 
+> ❌ **No**, you cannot use the loopback IP (`127.0.0.1`) to access software on a *different* laptop.
+
+---
+
+### 🧠 Why?
+
+Because `127.0.0.1` (loopback IP) always refers to **"this computer"** — not any other device.
+
+* On your **laptop A**, `127.0.0.1` means "laptop A"
+* On your **laptop B**, `127.0.0.1` means "laptop B"
+* So if you try to access `127.0.0.1` from laptop B, you’re talking to **laptop B itself**, not laptop A
+
+---
+
+### ✅ What should you do instead?
+
+If you want to access software running on **laptop A from laptop B**, you need to:
+
+1. **Find the IP address** of laptop A on the network (e.g., `192.168.1.5`)
+2. Make sure the software is **listening on all network interfaces** (`0.0.0.0`, not just `127.0.0.1`)
+3. Ensure the **firewall allows incoming connections**
+4. On laptop B, open a browser or tool and go to:
+
+   ```
+   http://192.168.1.5:PORT
+   ```
+
+---
+
+### 🧪 Example:
+
+* Laptop A runs a web app on port `5000`
+* Laptop A’s IP on Wi-Fi is `192.168.1.5`
+* From Laptop B, you open:
+
+  ```
+  http://192.168.1.5:5000
+  ```
+
+And now you’re testing the software from another machine 👍
