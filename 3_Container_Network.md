@@ -2,7 +2,7 @@ Here's the breakdown of **Docker Container Networking**, including creating cust
 
 # Docker Container Networking
 
-Understanding how Docker networking works is crucial for managing and troubleshooting containerized applications. Here’s an overview of Docker's default network configuration and how to create custom networks for containers.
+Understanding how Docker networking works is crucial for managing and troubleshooting (= fixing problems or solving issues) containerized applications. Here’s an overview of Docker's default network configuration and how to create custom networks for containers.
 
 ## Default Network Interface for Containers
 
