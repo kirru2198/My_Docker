@@ -1,4 +1,4 @@
-Here's the breakdown of **Docker Container Networking**, including creating custom networks, communication between containers, and inspecting Docker's network configurations, formatted in markdown with descriptions and maintenance content:
+Here's the breakdown of **Docker Container Networking**, including creating custom networks, communication between containers, and inspecting Docker's network configurations. 
 
 # Docker Container Networking
 
