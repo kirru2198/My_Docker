@@ -8,7 +8,7 @@ Another problem arises when you have multiple containers, like a front-end and a
 
 To solve these problems, Docker provides two solutions: bind mounts and volumes.
 
-**Bind Mounts**: This allows you to link a directory on your host machine to a directory in your container. For example, if you bind a folder called `/app` on your host to `/app` in your container, any files written in that directory will persist even if the container goes down. When you create a new container, you can bind it to the same host directory, ensuring that data is not lost.
+**Bind Mounts**: This allows you to link a directory on your host machine to a directory in your container. For example, if you bind a folder called `/app` on your host to `/app` in your container, any files written in that directory will persist even if the container goes down. When you create a new container, you can bind (=connec) it to the same host directory, ensuring that data is not lost.
 
 **Volumes**: Volumes also provide persistent (=lasting) storage but offer better management. You can create a volume using Docker commands, and it acts as a logical partition on your host. Volumes can be easily created, managed, and shared between containers. They can also be stored on external storage devices, making them more flexible than bind mounts.
 
