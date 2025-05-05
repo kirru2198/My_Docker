@@ -1,6 +1,8 @@
 We will discuss Docker bind mounts and volumes. Many people find these concepts complicated, but I will simplify them for you.
 
-First, let's talk about a major issue with containers. For example, if you have a container running an Nginx application, it logs user information, such as who is logged in and their IP address. This log file is crucial for security audits and tracking user activity. However, if the container goes down, the log file is lost because containers are ephemeral, meaning they are short-lived. Containers do not have a permanent file system, so when they stop, all data stored in them is deleted.
+First, let's talk about a major issue with containers. For example, if you have a container running an Nginx application, it logs (=records) user information, such as who is logged in and their IP address. This log file is crucial for security audits and tracking user activity. However, if the container goes down (=stops), the log file is lost because containers are ephemeral, meaning they are short-lived. Containers do not have a permanent file system, so when they stop, all data stored in them is deleted.
+
+> **Security audits** are reviews or assessments to ensure that an organization's security measures are effective and that they are following security policies and regulations.
 
 Another problem arises when you have multiple containers, like a front-end and a back-end container. The back-end might write a file that the front-end needs to read. If the back-end container goes down, the front-end can only access the current day's data, losing access to previous records.
 
