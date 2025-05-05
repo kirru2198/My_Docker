@@ -10,7 +10,7 @@ Docker creates a virtual network interface for each container to ensure they can
 
 > ### Network Interface Card (NIC)
 > Each machine, whether it’s your laptop or an EC2 instance, has a **Network Interface Card (NIC)** that enables it to connect to external networks. For example:
-> - In EC2, the main NIC might be named **ENS5**.
+> - In EC2, the main NIC might be named **ens5 or enX0**.
 > - After Docker is installed, a new virtual network interface called **docker0** is created for container networking.
 
 ### Inspecting Network Interfaces:
@@ -18,6 +18,10 @@ You can inspect network interfaces on your machine using the following command:
 ```bash
 ip a
 ```
+- before installing Docker (on EC2 instance)
+
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
+
 - When Docker is installed, you'll see the **docker0** interface (used for container communication).
 - Each running container gets a **VETH** interface connected to **docker0**.
 
