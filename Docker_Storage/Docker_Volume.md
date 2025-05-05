@@ -33,6 +33,9 @@ Among these, named volumes are the most commonly used in production because Dock
 
 **Using Docker Volumes in Docker Compose**
 
-In Docker Compose, you define volumes similarly to how you do in the `docker run` command. You specify the volume name and the path in the container. You can also list all the volumes you want to mount for different containers. This allows multiple containers to share the same data by referencing the same volume name.
+Creating Docker volumes with Docker Compose is similar to using the `docker run` command. In a Docker Compose file, you define volumes under the `volumes` section, just like you would with the `-v` option. For example, you can create a named volume called `db-data`, which serves as a reference name, and specify the path in the container where it will be mounted.
 
-Thank you for watching! If you found this video helpful, please like it. Subscribe to my channel for updates on new videos. If you have any questions or need clarification, feel free to leave a comment, and I will do my best to answer. See you in the next video!
+At the same level as the services, you list all the volumes you want to use. If you have multiple containers, you can define the volumes they will use. The advantage of named volumes is that you can mount the same volume in multiple containers, allowing them to share data. You can mount the same volume reference to different paths inside each container.
+
+<img width="453" alt="image" src="https://github.com/user-attachments/assets/9bb76e5a-8150-4b7a-9adb-fac61d1d6647" />
+
