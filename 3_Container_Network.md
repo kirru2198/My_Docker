@@ -8,10 +8,10 @@ Understanding how Docker networking works is crucial for managing and troublesho
 
 Docker creates a virtual network interface for each container to ensure they can communicate with each other and the host machine. This interface is called **VETH** (Virtual Ethernet) and is attached to the **docker0** bridge network.
 
-### Network Interface Card (NIC)
-Each machine, whether it’s your laptop or an EC2 instance, has a **Network Interface Card (NIC)** that enables it to connect to external networks. For example:
-- In EC2, the main NIC might be named **ENS5**.
-- After Docker is installed, a new virtual network interface called **docker0** is created for container networking.
+> ### Network Interface Card (NIC)
+> Each machine, whether it’s your laptop or an EC2 instance, has a **Network Interface Card (NIC)** that enables it to connect to external networks. For example:
+> - In EC2, the main NIC might be named **ENS5**.
+> - After Docker is installed, a new virtual network interface called **docker0** is created for container networking.
 
 ### Inspecting Network Interfaces:
 You can inspect network interfaces on your machine using the following command:
