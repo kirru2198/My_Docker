@@ -2,6 +2,8 @@
 
 Docker volumes are important for specific use cases, especially when dealing with data persistence. For example, if you have a database container, it uses a virtual file system to store data. However, this data is not saved if you remove or restart the container, which means you lose all changes. To avoid this, you need Docker volumes.
 
+<img width="509" alt="image" src="https://github.com/user-attachments/assets/b10eb1da-5579-42d6-b91f-bbfba0f4494d" />
+
 **What Are Docker Volumes?**
 
 Docker volumes allow you to connect a folder from the host's physical file system to a folder in the container's virtual file system. This means that when the container writes data, it is also saved on the host. If you change something in the host folder, it appears in the container as well. This way, even if the container restarts, it can access the data from the host.
