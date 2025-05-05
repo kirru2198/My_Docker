@@ -50,10 +50,6 @@ It never leaves your computer. It’s like writing a note and reading it yoursel
 
 ---
 
-Would you like a simple visual or analogy to help remember it?
-
----
-
 ### how loopback is used in Docker or container networking?
 
 Great! Here's how the **loopback address** (`127.0.0.1`) behaves in **Docker networking**, and why it can be tricky:
