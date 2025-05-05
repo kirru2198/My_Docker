@@ -8,15 +8,28 @@ Docker volumes are important for specific use cases, especially when dealing wit
 
 Docker volumes allow you to connect a folder from the host's physical file system to a folder in the container's virtual file system. This means that when the container writes data, it is also saved on the host. If you change something in the host folder, it appears in the container as well. This way, even if the container restarts, it can access the data from the host.
 
+<img width="502" alt="image" src="https://github.com/user-attachments/assets/ece5d368-d539-43f5-8781-9dc16f0872e4" />
+
+
 **Types of Docker Volumes**
 
-1. **Host Volumes**: You create these by using the `-v` option in the `docker run` command. You specify which host folder to connect to the container. 
+1. **Host Volumes**: Docker volumes can be created in different ways, but a common method is using the `docker run` command with the `-v` option. This option allows you to link a directory from the host system to a directory in the container, which is known as a host volume. The key feature of a host volume is that you choose the specific folder on the host that you want to mount into the container. 
 
-2. **Anonymous Volumes**: These are created automatically by Docker without specifying a host folder. They are stored under `/var/lib/docker/volumes` and are not easily referenced.
+<img width="505" alt="image" src="https://github.com/user-attachments/assets/38d6e08b-49d0-47c1-9b4d-ff416b69e583" />
 
-3. **Named Volumes**: These are similar to anonymous volumes but allow you to specify a name for the volume. This makes it easier to reference the volume without needing to know the exact path.
+2. **Anonymous Volumes**: The second type of volume is created by referencing only the container directory, without specifying a host directory. Docker automatically handles this by creating a folder under `/var/lib/docker/volumes/random-hash/_data` for each container. These volumes are called anonymous volumes because you don't have a direct reference to the automatically generated folder; you just need to know the path.
+
+<img width="504" alt="image" src="https://github.com/user-attachments/assets/caa485de-bba2-4193-9b8a-1d0bf9da56bc" />
+
+3. **Named Volumes**: The third type of volume is an improved version of anonymous volumes. Here, you give a name to the folder on the host system. This name is your reference to the directory. These are called named volumes. Unlike anonymous volumes, you can refer to the volume by its name without needing to know the exact host path.
+
+<img width="437" alt="image" src="https://github.com/user-attachments/assets/ccf9bfac-a4e5-4c3c-b70f-3ad4897dbd4a" />
 
 Among these, named volumes are the most commonly used in production because Docker manages them effectively.
+
+---
+
+**Docker Volumes in docker-compose**
 
 **Using Docker Volumes in Docker Compose**
 
