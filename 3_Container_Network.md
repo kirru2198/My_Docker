@@ -18,6 +18,10 @@ You can inspect network interfaces on your machine using the following command:
 ```bash
 ip a
 ```
+or 
+```
+ip addr show
+```
 - before installing Docker (on EC2 instance)
 
 <img width="959" alt="image" src="https://github.com/user-attachments/assets/955d355f-2d7a-4961-9664-0bbe2ed88997" />
