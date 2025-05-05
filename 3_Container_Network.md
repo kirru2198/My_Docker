@@ -67,6 +67,32 @@ docker network inspect bridge
 ```
 This will show details about the **docker0** network, including the IP range (e.g., 172.17.0.0/16) and other configuration details.
 
+May show something like:
+
+```json
+[
+  {
+    "Name": "bridge",
+    "Id": "a1b2c3...",
+    "Driver": "bridge",
+    "IPAM": {
+      "Config": [
+        {
+          "Subnet": "172.17.0.0/16",
+          "Gateway": "172.17.0.1"
+        }
+      ]
+    },
+    "Containers": {
+      "abc123...": {
+        "Name": "my-container",
+        "IPv4Address": "172.17.0.2/16"
+      }
+    }
+  }
+]
+```
+
 ### 4. Creating a Docker Container:
 To create a container, use the following command:
 ```bash
