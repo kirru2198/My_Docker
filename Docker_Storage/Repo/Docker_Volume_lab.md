@@ -26,6 +26,7 @@ Docker volumes are the primary mechanism for managing **data generated and used*
    - Persistent storage.
 2. **Bind Mounts**:
    - Maps a specific host directory to a container.
+   > - "Connects a specific host directory to a container."
 3. **tmpfs**:
    - Temporary storage in memory (non-persistent).
 
