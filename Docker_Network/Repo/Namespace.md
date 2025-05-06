@@ -124,6 +124,23 @@ ip netns exec blue ip link set veth-blue up
 ```
 <img width="530" alt="image" src="https://github.com/user-attachments/assets/a3d2e89a-d6b2-466c-918b-8e6675d0dc63" />
 
+---
+An **ARP table** (Address Resolution Protocol table) is a list that your computer or device keeps to match **IP addresses** to **MAC addresses**.
+
+### Why it's needed:
+
+* Computers communicate over a network using IP addresses.
+* But on a local network, data is actually delivered using MAC addresses.
+* The **ARP table** helps your computer figure out:
+  **"What is the MAC address for this IP address?"**
+
+### Example:
+
+If your computer wants to send data to `192.168.1.10`, it checks the ARP table to find the matching MAC address like `00:1A:2B:3C:4D:5E`.
+
+---
+
+
 At this point, the two namespaces are connected and can communicate with each other. For example, you can run a ping from the red namespace to the blue one:
 
 ```bash
@@ -165,3 +182,16 @@ To enable namespaces to reach external networks, add a route in the namespace po
 ip netns exec <namespace_name> ip route add <destination_network> via <gateway_ip>
 ```
 To allow external networks to communicate with the namespaces, you can set up port forwarding using IP tables.
+
+A **MAC address** (Media Access Control address) is a **unique identifier** assigned to a **network interface card (NIC)** of a device. It helps identify devices on a **local network (LAN)**.
+
+### Key points:
+
+* It is **hardware-based** and usually **burned into the network card**.
+* Format: 6 pairs of hexadecimal numbers, like `00:1A:2B:3C:4D:5E`.
+* It works at **Layer 2 (Data Link Layer)** of the OSI model.
+* It’s used by protocols like **Ethernet** and **Wi-Fi** to ensure data goes to the right device on a local network.
+
+### Example:
+
+If your phone and laptop are on the same Wi-Fi, they each have their own MAC address so the router knows which device to send data to. 
