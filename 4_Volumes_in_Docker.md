@@ -1,5 +1,3 @@
-Here’s a summary of the Docker storage concept, container data, volumes, and backup practices:
-
 # Docker Storage Concepts
 
 ## 1. Introduction to Docker Storage
