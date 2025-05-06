@@ -20,7 +20,11 @@ This isolation is achieved using namespaces.
 ---
 **Network Namespaces**
 
-When it comes to networking, the host has its own **interfaces and routing tables**. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own **virtual interfaces and routing tables**.
+When it comes to networking, the host system has its own network interfaces that connect to the local area network (LAN). It also maintains its own routing and ARP (Address Resolution Protocol) tables, which contain information about the rest of the network.
+
+However, when we create a container, we want to isolate it from all this network information. To achieve that, we use a network namespace. A network namespace gives the container its own isolated view of the network.
+
+Within its namespace, the container cannot see the host's network interfaces or routing information. Instead, it has its own virtual network interfaces, its own routing table, and its own ARP table. This setup makes the container feel like it's running on a separate machine with its own network configuration.
 
 <img width="526" alt="image" src="https://github.com/user-attachments/assets/92091b8a-4fef-4516-af8c-29e5eafd7d69" />
 
