@@ -1,6 +1,6 @@
 **Introduction**
 
-Today, we will explore network namespaces in Linux. By the end of this section, you'll take a practice test with challenges related to network namespaces in a hands-on lab environment. Before we dive in, don't forget to subscribe to my channel for more videos like this!
+Today, we will explore **network namespaces** in Linux. By the end of this section, you'll take a practice test with challenges related to network namespaces in a hands-on lab environment. Before we dive in, don't forget to subscribe to my channel for more videos like this!
 
 **What are Namespaces?**
 
