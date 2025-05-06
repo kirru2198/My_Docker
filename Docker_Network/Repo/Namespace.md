@@ -10,7 +10,7 @@ Network namespaces are used by containers, like Docker, to achieve network isola
 
 **Network Namespaces**
 
-When it comes to networking, the host has its own interfaces and routing tables. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own virtual interfaces and routing tables.
+When it comes to networking, the host has its own **interfaces and routing tables**. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own **virtual interfaces and routing tables**.
 
 To create a network namespace, use the command:
 ```
@@ -33,6 +33,8 @@ For example, to list interfaces in the "red" namespace:
 ip netns exec red ip link
 ```
 Inside the namespace, you will only see the loopback interface, not the host's interfaces.
+
+---
 
 **Establishing Connectivity Between Namespaces**
 
