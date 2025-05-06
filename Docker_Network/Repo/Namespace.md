@@ -134,6 +134,9 @@ ip netns exec red ping 192.168.15.2
 If you inspect the ARP tables, you'll see:
 
 * The red namespace resolves the IP `192.168.15.2` (blue) to its MAC address.
+> * The red namespace finds the MAC address of the IP 192.168.15.2 (blue).
+> * In networking, a MAC address is a unique identifier assigned to a network interface card (NIC) for communications on the physical network segment.
+
 * The blue namespace resolves `192.168.15.1` (red) to its MAC address.
 * The host’s ARP table, however, has no knowledge of these namespaces or their interfaces, because the entire setup is isolated from the host network.
 
