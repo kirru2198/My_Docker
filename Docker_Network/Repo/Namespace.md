@@ -22,6 +22,9 @@ This isolation is achieved using namespaces.
 
 When it comes to networking, the host has its own **interfaces and routing tables**. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own **virtual interfaces and routing tables**.
 
+<img width="526" alt="image" src="https://github.com/user-attachments/assets/92091b8a-4fef-4516-af8c-29e5eafd7d69" />
+
+
 To create a network namespace, use the command:
 ```
 ip netns add <namespace_name>
