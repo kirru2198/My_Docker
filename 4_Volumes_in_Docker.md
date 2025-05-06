@@ -1,91 +1,18 @@
-# Docker Storage Concepts
 
-## 1. Introduction to Docker Storage
 
-We started by checking the state of our machine. After confirming nothing was running, we cleaned up all containers, images, and networks to reset everything to a fresh state.
 
-### **Cleaning Up Everything:**
-After running the cleanup commands, all volumes, images, and containers were deleted, leaving the machine in a clean state.
 
----
 
-## 2. Exploring Docker Storage
 
-Next, we created a container to explore how Docker handles storage:
 
-### **Creating a Container:**
-We created a container using the command:
-```bash
-docker run -d --name container100 alpine /bin/sh
-```
-This command starts a container named `container100` using the `alpine` image, and it runs in the background.
+.
 
-To confirm the container is running:
-```bash
-docker ps
-```
 
-### **Accessing the Container:**
-We attached to the container with the command:
-```bash
-docker attach container100
-```
-Once inside, we explored the file system inside the container. If we checked the host machine’s file system, it looked different from the container’s.
 
-### **Creating Data Inside the Container:**
-- We created a directory inside the container:
-  ```bash
-  mkdir /data
-  ```
-- Then, we created a file inside the `/data` directory:
-  ```bash
-  echo "This is my code" > /data/code.py
-  ```
-- Viewing the contents of the file:
-  ```bash
-  cat /data/code.py
-  ```
-  Output: `"This is my code"`
 
-### **Key Takeaway:**
-- The file `/data/code.py` was created inside the container. The data is stored within the container's file system.
-- The data persists as long as the container remains intact.
 
-### **Exiting the Container:**
-To exit the container without stopping it, we used:
-```bash
-Ctrl + P, Ctrl + Q
-```
-This returns us to the host machine’s prompt, while the container keeps running.
 
----
 
-## 3. Stopping and Restarting the Container
-
-We tested stopping and restarting the container:
-
-- **Stopping the Container**:
-  ```bash
-  docker stop container100
-  ```
-  
-- **Starting the Container Again**:
-  ```bash
-  docker start container100
-  ```
-
-When we re-entered the container (`docker attach container100`), we found that the file `/data/code.py` was still there. This shows that the data persists even after stopping and starting the container.
-
----
-
-## 4. Deleting Containers and Data
-
-### **Deleting a Container:**
-When a container is deleted, its data is also deleted:
-```bash
-docker rm container100
-```
-- If we recreate the container using the same image, it doesn’t have the data because it was stored within the deleted container.
 
 ### **Container Data and Read-Only Layers:**
 - Containers have a small **write layer** that stores any changes made to the container (like created files).
