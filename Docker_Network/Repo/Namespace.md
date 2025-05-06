@@ -6,6 +6,8 @@ Today, we will explore **network namespaces** in Linux.
 
 Network namespaces are used by containers, like Docker, to achieve network isolation. Think of your host as a house and namespaces as the individual rooms assigned to each child. Each child has privacy in their room and cannot see what happens outside. However, as a parent, you can see all the rooms. Similarly, when you create a container, it is isolated from the host and other containers using namespaces. The container only sees its own processes and thinks it is on its own host, while the host can see everything.
 
+> The container only sees its own tasks and thinks it is on its own host, while the host can see everything.
+
 **Network Namespaces**
 
 When it comes to networking, the host has its own interfaces and routing tables. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own virtual interfaces and routing tables.
