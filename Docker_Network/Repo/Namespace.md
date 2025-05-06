@@ -4,10 +4,20 @@ Today, we will explore **network namespaces** in Linux.
 
 **What are Namespaces?**
 
-Network namespaces are used by containers, like Docker, to achieve network isolation. Think of your host as a house and namespaces as the individual rooms assigned to each child. Each child has privacy in their room and cannot see what happens outside. However, as a parent, you can see all the rooms. Similarly, when you create a container, it is isolated from the host and other containers using namespaces. The container only sees its own processes and thinks it is on its own host, while the host can see everything.
+Network namespaces are used by containers, like Docker, to achieve network isolation. Containers are seperated from the Underlying host using namespaces. Think of your host as a house and namespaces as the individual rooms assigned to each child. Each child has privacy in their room and cannot see what happens outside. However, as a parent, you can see all the rooms. Similarly, when you create a container, it is isolated from the host and other containers using namespaces. The container only sees its own processes and thinks it is on its own host, while the host can see everything. (including those running inside containers) 
 
 > The container only sees its own tasks and thinks it is on its own host, while the host can see everything.
 
+**For example:**
+
+- Inside a container, you might see just one process (PID 1).
+- From the host, you can see all processes — including those inside the container with a different PID. (same process but different PID inside and outside the container)
+
+This isolation is achieved using namespaces.
+
+<img width="523" alt="image" src="https://github.com/user-attachments/assets/cf757177-f7d5-4e5e-90d6-3bd2f4e6d980" />
+
+---
 **Network Namespaces**
 
 When it comes to networking, the host has its own **interfaces and routing tables**. To isolate the container from the host's network details, we create a network namespace for it. This way, the container has its own **virtual interfaces and routing tables**.
