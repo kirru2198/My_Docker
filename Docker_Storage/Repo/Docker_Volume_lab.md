@@ -11,6 +11,9 @@ Docker volumes are the primary mechanism for managing **data generated and used*
 - **They are stored in the Docker-managed directory on the host (e.g., `/var/lib/docker/volumes`).**
 - **Benefits**:
   - Data persistence across container restarts or recreations.
+  > - "during container restarts or recreations"
+  > - or
+  > - "when containers restart or are recreated"
   - Easy sharing of data between containers.
   - Decouples storage management from container images.
 
