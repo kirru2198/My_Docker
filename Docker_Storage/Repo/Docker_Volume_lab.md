@@ -19,6 +19,8 @@ Docker volumes are the primary mechanism for managing **data generated and used*
   > - "Keeps storage management separate from container images."
 
 #### **Types of Mounts in Docker**:
+> "Types of storage connections in Docker."
+
 1. **Volumes**:
    - Managed by Docker.
    - Persistent storage.
