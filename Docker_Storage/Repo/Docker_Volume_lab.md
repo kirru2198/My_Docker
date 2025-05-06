@@ -36,7 +36,9 @@ Docker volumes are the primary mechanism for managing **data generated and used*
 
 #### **Concept**
 - Volumes can be created independently or dynamically when a container is created.
+> - "Volumes can be created independently or automatically when a container is created."
 - Volumes can be mounted to specific paths in the container to persist data.
+> - "Volumes can be mounted to specific paths in the container to save data."
 
 #### **Use Case**
 - Storing logs, databases, or configuration files that need to persist even after a container is removed.
