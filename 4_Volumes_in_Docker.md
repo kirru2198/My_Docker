@@ -1,23 +1,7 @@
-
-
-
-
-
-
-
-.
-
-
-
-
-
-
-
-
 ### **Container Data and Read-Only Layers:**
 - Containers have a small **write layer** that stores any changes made to the container (like created files).
 - This write layer is deleted when the container is removed, explaining why data is lost when the container is deleted.
-
+> - This Write layer depends upon the life-cycle of container.
 ---
 
 ## 5. Introducing Docker Volumes
