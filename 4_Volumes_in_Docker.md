@@ -34,5 +34,7 @@ This is similar to **EBS volumes in EC2**:
 
 ---
 
+<img width="380" alt="image" src="https://github.com/user-attachments/assets/b90583e3-3914-4122-9720-f11f58d30fac" />
+
 
 
