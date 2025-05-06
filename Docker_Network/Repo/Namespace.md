@@ -94,12 +94,16 @@ ip link add veth-red type veth peer name veth-blue
 
 This creates two connected interfaces: `veth-red` and `veth-blue`.
 
+<img width="531" alt="image" src="https://github.com/user-attachments/assets/79e0b299-44c9-4420-b28a-662760cfe341" />
+
 Next, we assign each end of the cable to the appropriate network namespace. For example:
 
 ```bash
 ip link set veth-red netns red
 ip link set veth-blue netns blue
 ```
+<img width="531" alt="image" src="https://github.com/user-attachments/assets/23a003f9-ab84-41c6-bd56-445d5ef9289a" />
+
 
 Now, each namespace has one end of the cable. We can assign IP addresses within the namespaces:
 
@@ -107,25 +111,34 @@ Now, each namespace has one end of the cable. We can assign IP addresses within 
 ip netns exec red ip addr add 192.168.15.1/24 dev veth-red
 ip netns exec blue ip addr add 192.168.15.2/24 dev veth-blue
 ```
+<img width="527" alt="image" src="https://github.com/user-attachments/assets/2368aaf1-78a7-4206-93ed-d9244f458d17" />
+
+---
 
 Then we bring up the interfaces:
+> "enable the interfaces" or "turn on the interfaces."
 
 ```bash
 ip netns exec red ip link set veth-red up
 ip netns exec blue ip link set veth-blue up
 ```
+<img width="530" alt="image" src="https://github.com/user-attachments/assets/a3d2e89a-d6b2-466c-918b-8e6675d0dc63" />
 
 At this point, the two namespaces are connected and can communicate with each other. For example, you can run a ping from the red namespace to the blue one:
 
 ```bash
 ip netns exec red ping 192.168.15.2
 ```
+---
 
 If you inspect the ARP tables, you'll see:
 
 * The red namespace resolves the IP `192.168.15.2` (blue) to its MAC address.
 * The blue namespace resolves `192.168.15.1` (red) to its MAC address.
 * The host’s ARP table, however, has no knowledge of these namespaces or their interfaces, because the entire setup is isolated from the host network.
+
+<img width="537" alt="image" src="https://github.com/user-attachments/assets/fc18c8ee-224f-4d80-99a7-3cc97a32b991" />
+
 
 ---
 
