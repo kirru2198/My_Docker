@@ -16,6 +16,7 @@ Docker volumes are the primary mechanism for managing **data generated and used*
   > - "when containers restart or are recreated"
   - Easy sharing of data between containers.
   - Decouples storage management from container images.
+  > - "Keeps storage management separate from container images."
 
 #### **Types of Mounts in Docker**:
 1. **Volumes**:
