@@ -28,6 +28,7 @@ Within its namespace, the container cannot see the host's network interfaces or 
 
 <img width="526" alt="image" src="https://github.com/user-attachments/assets/92091b8a-4fef-4516-af8c-29e5eafd7d69" />
 
+---
 
 To create a network namespace, use the command:
 ```
