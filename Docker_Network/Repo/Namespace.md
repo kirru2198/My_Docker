@@ -38,38 +38,96 @@ To list the namespaces, run:
 ```
 ip netns list
 ```
+---
+
 To see the interfaces on the host, use:
 ```
 ip link
 ```
-To view interfaces within a specific namespace, prefix the command with:
+The Host has loopback interface and eth0 interface 
+
+To view interfaces within a specific namespace, prefix the command with: (This is from the Host)
 ```
-ip netns exec <namespace_name> <command>
+ip netns exec <namespace_name> ip link
 ```
-For example, to list interfaces in the "red" namespace:
+Or
+This only works, if intended to run the command inside the Namespace
+```
+ip -n <namespace_name> link
+```
+output:
+It only list the loopback interface, you cannot see the eth0 interface on the host.  
+
+For example, to list interfaces in the "red" namespace: (This is from Host)
 ```
 ip netns exec red ip link
 ```
 Inside the namespace, you will only see the loopback interface, not the host's interfaces.
 
+<img width="528" alt="image" src="https://github.com/user-attachments/assets/7acd4ce5-6896-46e7-81a3-94fae6964920" />
+
+---
+**ARP table**
+The Same is True with the ARP table 
+<img width="517" alt="image" src="https://github.com/user-attachments/assets/91e7318e-c9e0-4dfb-9fd3-18689bde90b1" />
+
+---
+**Routing Table**
+The same is True for Routing table 
+<img width="526" alt="image" src="https://github.com/user-attachments/assets/4179b07a-3dbc-4d8e-b802-55277252a2f7" />
+
+---
+**Establishing Connectivity Between Namespaces**
 ---
 
-**Establishing Connectivity Between Namespaces**
+**Network Connectivity**
 
-To connect namespaces, we can use a virtual Ethernet pair, which acts like a virtual cable. To create this, run:
+By default, newly created network namespaces have no network connectivity. They have no interfaces of their own and cannot see the host's network.
+
+Let’s first establish connectivity **between two namespaces**. Just like we connect two physical machines using Ethernet cables and interfaces, we can connect two network namespaces using a **virtual Ethernet (veth) pair**—think of it as a virtual cable with two ends. This is often referred to as a "pipe", but it's easier to understand as a **virtual cable** with one interface at each end.
+
+To create this virtual cable, we use the following command:
+
+```bash
+ip link add veth-red type veth peer name veth-blue
 ```
-ip link add <name> type veth peer name <name>
+
+This creates two connected interfaces: `veth-red` and `veth-blue`.
+
+Next, we assign each end of the cable to the appropriate network namespace. For example:
+
+```bash
+ip link set veth-red netns red
+ip link set veth-blue netns blue
 ```
-Next, attach each interface to the appropriate namespace:
+
+Now, each namespace has one end of the cable. We can assign IP addresses within the namespaces:
+
+```bash
+ip netns exec red ip addr add 192.168.15.1/24 dev veth-red
+ip netns exec blue ip addr add 192.168.15.2/24 dev veth-blue
 ```
-ip link set <interface_name> netns <namespace_name>
+
+Then we bring up the interfaces:
+
+```bash
+ip netns exec red ip link set veth-red up
+ip netns exec blue ip link set veth-blue up
 ```
-Assign IP addresses to each namespace and bring up the interfaces:
+
+At this point, the two namespaces are connected and can communicate with each other. For example, you can run a ping from the red namespace to the blue one:
+
+```bash
+ip netns exec red ping 192.168.15.2
 ```
-ip netns exec <namespace_name> ip addr add <ip_address> dev <interface_name>
-ip netns exec <namespace_name> ip link set <interface_name> up
-```
-Now, the namespaces can communicate with each other.
+
+If you inspect the ARP tables, you'll see:
+
+* The red namespace resolves the IP `192.168.15.2` (blue) to its MAC address.
+* The blue namespace resolves `192.168.15.1` (red) to its MAC address.
+* The host’s ARP table, however, has no knowledge of these namespaces or their interfaces, because the entire setup is isolated from the host network.
+
+---
 
 **Creating a Virtual Switch**
 
