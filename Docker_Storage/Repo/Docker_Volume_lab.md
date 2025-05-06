@@ -7,7 +7,7 @@ Docker volumes are the primary mechanism for managing **data generated and used*
 ### **1. Understanding Volumes**
 
 #### **Concept**
-- **Volumes** are independent storage managed by Docker, designed to persist data beyond the lifecycle of a container.
+- **Volumes** are independent storage managed by **Docker**, designed to persist data beyond the lifecycle of a container.
 - They are stored in the Docker-managed directory on the host (e.g., `/var/lib/docker/volumes`).
 - **Benefits**:
   - Data persistence across container restarts or recreations.
