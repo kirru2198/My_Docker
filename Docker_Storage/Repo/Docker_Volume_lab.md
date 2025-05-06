@@ -1,6 +1,6 @@
 ### **Docker Volumes**
 
-Docker volumes are the primary mechanism for managing **data generated and used** by Docker containers. They allow containers to store and share data with the host system or other containers, ensuring that data persists beyond the lifecycle of a container.
+Docker volumes are the primary mechanism for managing **data generated and used** by Docker containers. They allow containers **to store and share data with the host system or other containers**, ensuring that data persists beyond the lifecycle of a container.
 
 ---
 
