@@ -195,10 +195,10 @@ The next step is to connect the namespaces to the new virtual network switch we 
 The direct connection (veth pair) between the two namespaces is no longer needed. We can delete it using:
 
 ```bash
-ip link delete <interface-name>
+ip -n red link delete <interface-name>
 ```
 
-When you delete one end of a veth pair, the other end is automatically deleted since they are linked.
+When you delete one end of a veth pair, the other end is automatically deleted since they are linked (since they are a pair).
 
 ---
 
@@ -227,7 +227,7 @@ Use consistent naming (e.g., `veth-blue` and `veth-blue-br`) for other namespace
 ip link set veth-red netns red
 ```
 
-* Attach `veth-red-br` to the bridge (`vnet0`) by setting it as a slave:
+* Attach `veth-red-br` to the bridge (`vnet0`) by setting it as a slave (Here, slave is red):
 
 ```bash
 ip link set veth-red-br master vnet0
@@ -249,19 +249,17 @@ Inside each namespace, assign IP addresses to the veth interfaces. Use the same 
 
 ```bash
 # Inside the red namespace
-ip netns exec red ip addr add 192.168.15.1/24 dev veth-red
-ip netns exec red ip link set veth-red up
+ip netns red ip addr add 192.168.15.1 dev veth-red
 
 # Inside the blue namespace
-ip netns exec blue ip addr add 192.168.15.2/24 dev veth-blue
-ip netns exec blue ip link set veth-blue up
+ip netns blue ip addr add 192.168.15.2/24 dev veth-blue
 ```
 
 Also, bring up the bridge and host-side interfaces:
 
 ```bash
-ip link set veth-red-br up
-ip link set veth-blue-br up
+ip -n red link set veth-red up
+ip -n blue link set veth-blue up
 ip link set vnet0 up
 ```
 
@@ -291,5 +289,36 @@ They behave just like physical hosts connected through a common switch.
 
 ---
 
-<img width="551" alt="image" src="https://github.com/user-attachments/assets/9d989373-17ca-4f35-b64d-3e9487156aaf" />
+Earlier, we assigned our **host** the IP address `192.168.1.2`. Now, what happens if we try to reach one of the interfaces inside the **namespaces** from the host?
+
+At this point, the **host** is on one network (`192.168.1.0/24`), while the **namespaces** are on another (`192.168.15.0/24`). So by default, the host **cannot** communicate with the namespaces.
+
+However, remember that the **bridge (vnet0)** we created acts as a **network interface on the host**. So we do have an interface on the 192.168.15.X network on our host. Since this just another interface all we need to do is assign an Ip address to it. so we can reach Namespaces through it. (Since it is connected to the `192.168.15.0/24` network, we can enable communication by assigning an IP address from that subnet to the bridge interface.
+
+To do that, run:
+
+```bash
+ip addr add 192.168.15.5/24 dev vnet0
+ip link set vnet0 up
+```
+
+Now, the host has an IP (`192.168.15.5`) on the **same network** as the namespaces. You should now be able to ping any namespace from the host, for example:
+
+```bash
+ping 192.168.15.1  # Ping the red namespace
+```
+
+---
+
+### Important Notes
+
+This entire setup is still **internal to the host**—meaning it's a **private, isolated network**. From **within the namespaces**, you cannot reach the **external internet**. Likewise, **external systems** cannot reach any applications or services running inside the namespaces.
+
+The **only gateway** to the outside world is the host's physical Ethernet interface (e.g., `eth0`), which is connected to the external network (`192.168.1.0/24`).
+
+To allow internet access for the namespaces, you would need to configure **NAT (Network Address Translation)** or use **IP forwarding**.
+
+<img width="533" alt="image" src="https://github.com/user-attachments/assets/cd8d4424-cde1-4ad8-8ed2-5f3498a4e793" />
+
+---
 
