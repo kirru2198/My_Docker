@@ -96,7 +96,7 @@ May show something like:
 ### 4. Creating a Docker Container:
 To create a container, use the following command:
 ```bash
-docker run -d --name container1 alpine
+docker run -dit --name container1 alpine ash
 ```
 This starts a container in the background using the **alpine** image. The container will be connected to the default **docker0** network, and it will receive a **VETH** network interface connected to the **docker0** bridge.
 
