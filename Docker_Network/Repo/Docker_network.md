@@ -25,7 +25,7 @@ Docker provides several types of networks, each with a specific purpose:
   > - It creates or sets up a network on all Docker hosts participating in the swarm.
 
 - **Macvlan Network**:
-  - This network allows you to assign a unique MAC address to a container, making it appear as if it’s directly connected to the physical network.
+  - This network allows you to assign a unique **MAC address** to a container, making it appear as if it’s directly connected to the physical network.
   - This is used when containers need to interact with external networks directly, but with full isolation from the host network.
 
 ### 3. **Why Use Docker Networks?**
