@@ -173,13 +173,10 @@ There are several ways to create a virtual switch. Some common solutions include
 First, we create an internal bridge network by adding a new interface to the host using the `ip link add` command with the type set to `bridge`. We'll name this bridge interface **vnet0**. As far as the host is concerned, this is just another network interface—similar to `eth0`. You can see it listed in the output of the `ip link` command alongside other interfaces.
 
 However, by default, the new interface is down. To activate it, use the following command:
-
-```bash
-ip link set dev vnet0 up
-```
 ```
 ip link add name <bridge_name> type bridge
-ip link set <bridge_name> up
+ip link set dev <bridge_name> up
+ip link set dev vnet0 up
 ```
 Now, from the perspective of the host, **vnet0** is just another interface. But for the namespaces, **vnet0** acts like a **switch** that they can connect to. So, you can think of it as an interface on the host and a switch for the namespaces.
 
