@@ -22,6 +22,7 @@ Docker provides several types of networks, each with a specific purpose:
 - **Overlay Network**:
   - Overlay networks are used when you have multiple Docker hosts and need containers to communicate across hosts (like in Docker Swarm). This is useful for clustering containers across different machines.
   - It overlays a network across all Docker hosts participating in the swarm.
+  > - It creates or sets up a network on all Docker hosts participating in the swarm.
 
 - **Macvlan Network**:
   - This network allows you to assign a unique MAC address to a container, making it appear as if it’s directly connected to the physical network.
