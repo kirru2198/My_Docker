@@ -9,3 +9,11 @@ It means: all outbound traffic will be routed via gateway 172.31.80.1 using inte
 
 ---
 
+172.31.0.2 via 172.31.80.1 dev enX0 proto dhcp src 172.31.85.39 metric 100
+
+This route directs traffic destined for 172.31.0.2 through gateway 172.31.80.1 via interface enX0, using source IP 172.31.85.39, assigned by DHCP, with a metric of 100.
+
+To reach the IP address 172.31.0.2, send the traffic through 172.31.80.1 using the network interface enX0. The system will use 172.31.85.39 as the source IP. This route was set automatically by DHCP and has a priority (metric) of 100.
+
+---
+
