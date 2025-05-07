@@ -164,12 +164,30 @@ If you inspect the ARP tables, you'll see:
 
 **Creating a Virtual Switch**
 
-To connect multiple namespaces, we can create a virtual switch using a Linux bridge. Create the bridge with:
+When you have multiple containers or namespaces, you need a way for them to communicate with each other—just like devices in the physical world. To enable this communication, you create a **virtual network** inside your host system.
+
+To create a network, you need a **switch**. In the virtual world, that means creating a **virtual switch** within your host. Once the virtual switch is created, you can connect network namespaces to it.
+
+There are several ways to create a virtual switch. Some common solutions include the **Linux bridge** (a native Linux option) and **Open vSwitch (OVS)**. In this example, we’ll use the **Linux bridge**.
+
+First, we create an internal bridge network by adding a new interface to the host using the `ip link add` command with the type set to `bridge`. We'll name this bridge interface **vnet0**. As far as the host is concerned, this is just another network interface—similar to `eth0`. You can see it listed in the output of the `ip link` command alongside other interfaces.
+
+However, by default, the new interface is down. To activate it, use the following command:
+
+```bash
+ip link set dev vnet0 up
+```
 ```
 ip link add name <bridge_name> type bridge
 ip link set <bridge_name> up
 ```
-Connect each namespace to the bridge using virtual Ethernet pairs. After setting up the connections, assign IP addresses and bring up the interfaces.
+Now, from the perspective of the host, **vnet0** is just another interface. But for the namespaces, **vnet0** acts like a **switch** that they can connect to. So, you can think of it as an interface on the host and a switch for the namespaces.
+
+<img width="543" alt="image" src="https://github.com/user-attachments/assets/019f55b6-23db-4667-9543-54326ca3df10" />
+
+![image](https://github.com/user-attachments/assets/e76fa4b0-02eb-4e92-b6cd-80f55a17b54d)
+
+---
 
 **Connecting to the Host Network**
 
