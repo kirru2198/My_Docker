@@ -306,6 +306,9 @@ Now, the host has an IP (`192.168.15.5`) on the **same network** as the namespac
 ```bash
 ping 192.168.15.1  # Ping the red namespace
 ```
+---
+### Explaination
+
 In the image you provided, it illustrates how a **Linux bridge** (here labeled `v-net-0`) connects multiple network namespaces (with IPs like `192.168.15.1`, `.2`, `.3`, etc.) into a virtual private network (`192.168.15.0/24`).
 
 ### How the host can ping the namespace (private network):
@@ -336,6 +339,7 @@ To enable the host to ping a container/namespace in a private network:
    ```
 2. Ensure routing and firewall rules don’t block the traffic.
 
+---
 ---
 
 ### Important Notes
