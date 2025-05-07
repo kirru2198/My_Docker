@@ -306,6 +306,35 @@ Now, the host has an IP (`192.168.15.5`) on the **same network** as the namespac
 ```bash
 ping 192.168.15.1  # Ping the red namespace
 ```
+In the image you provided, it illustrates how a **Linux bridge** (here labeled `v-net-0`) connects multiple network namespaces (with IPs like `192.168.15.1`, `.2`, `.3`, etc.) into a virtual private network (`192.168.15.0/24`).
+
+### How the host can ping the namespace (private network):
+
+Initially, when the host tries to ping `192.168.15.1`, it fails with “Not Reachable!” — this is because the host doesn’t have an IP in the same subnet (`192.168.15.0/24`), so it cannot communicate with that virtual network.
+
+Then, the following command is run:
+
+```bash
+ip addr add 192.168.15.5/24 dev v-net-0
+```
+
+This adds an IP address (`192.168.15.5`) from the same subnet to the `v-net-0` interface on the host, making it a participant in the virtual bridge.
+
+After this, the host is able to successfully ping `192.168.15.1` because:
+
+* Both the host and the namespace are now in the same subnet.
+* They are connected through the Linux bridge (`v-net-0`).
+
+### Summary:
+
+To enable the host to ping a container/namespace in a private network:
+
+1. Assign an IP from the namespace subnet to the bridge interface on the host using:
+
+   ```bash
+   ip addr add <bridge-IP>/24 dev <bridge-name>
+   ```
+2. Ensure routing and firewall rules don’t block the traffic.
 
 ---
 
