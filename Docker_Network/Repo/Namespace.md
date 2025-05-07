@@ -186,10 +186,8 @@ Now, from the perspective of the host, **vnet0** is just another interface. But 
 
 ---
 
-Here's a polished and properly structured version of your explanation:
-
----
 **Connecting to a Virtual Switch**
+
 The next step is to connect the namespaces to the new virtual network switch we created earlier. Previously, we directly connected two namespaces using a virtual Ethernet (veth) pair, where each end of the cable (veth interface) was assigned to a different namespace. But now, since we want **all namespaces to connect to the same bridge network**, we need a new setup.
 
 ### 1. Remove the Old Cable
