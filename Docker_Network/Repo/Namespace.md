@@ -186,27 +186,112 @@ Now, from the perspective of the host, **vnet0** is just another interface. But 
 
 ---
 
-**Connecting to the Host Network**
+Here's a polished and properly structured version of your explanation:
 
-To allow the host to communicate with the namespaces, assign an IP address to the bridge interface on the host. This way, the host can ping the namespaces.
+---
+**Connecting to a Virtual Switch**
+The next step is to connect the namespaces to the new virtual network switch we created earlier. Previously, we directly connected two namespaces using a virtual Ethernet (veth) pair, where each end of the cable (veth interface) was assigned to a different namespace. But now, since we want **all namespaces to connect to the same bridge network**, we need a new setup.
 
-**Routing to External Networks**
+### 1. Remove the Old Cable
 
-To enable namespaces to reach external networks, add a route in the namespace pointing to the host as the gateway. Use:
+The direct connection (veth pair) between the two namespaces is no longer needed. We can delete it using:
+
+```bash
+ip link delete <interface-name>
 ```
-ip netns exec <namespace_name> ip route add <destination_network> via <gateway_ip>
+
+When you delete one end of a veth pair, the other end is automatically deleted since they are linked.
+
+---
+
+### 2. Create New Cables (veth Pairs)
+
+We will now create **new veth pairs** to connect each namespace to the **Linux bridge (vnet0)**.
+
+For example, for the **red namespace**, run:
+
+```bash
+ip link add veth-red type veth peer name veth-red-br
 ```
-To allow external networks to communicate with the namespaces, you can set up port forwarding using IP tables.
 
-A **MAC address** (Media Access Control address) is a **unique identifier** assigned to a **network interface card (NIC)** of a device. It helps identify devices on a **local network (LAN)**.
+* `veth-red`: will go into the **red** namespace.
+* `veth-red-br`: will remain in the **host** and connect to the **bridge**.
 
-### Key points:
+Use consistent naming (e.g., `veth-blue` and `veth-blue-br`) for other namespaces to make it easy to identify their connections.
 
-* It is **hardware-based** and usually **burned into the network card**.
-* Format: 6 pairs of hexadecimal numbers, like `00:1A:2B:3C:4D:5E`.
-* It works at **Layer 2 (Data Link Layer)** of the OSI model.
-* It’s used by protocols like **Ethernet** and **Wi-Fi** to ensure data goes to the right device on a local network.
+---
 
-### Example:
+### 3. Connect the Interfaces
 
-If your phone and laptop are on the same Wi-Fi, they each have their own MAC address so the router knows which device to send data to. 
+* Attach `veth-red` to the red namespace:
+
+```bash
+ip link set veth-red netns red
+```
+
+* Attach `veth-red-br` to the bridge (`vnet0`) by setting it as a slave:
+
+```bash
+ip link set veth-red-br master vnet0
+```
+
+Repeat the same steps for the blue namespace (and any others):
+
+```bash
+ip link add veth-blue type veth peer name veth-blue-br
+ip link set veth-blue netns blue
+ip link set veth-blue-br master vnet0
+```
+
+---
+
+### 4. Assign IP Addresses and Bring Up Interfaces
+
+Inside each namespace, assign IP addresses to the veth interfaces. Use the same subnet for all:
+
+```bash
+# Inside the red namespace
+ip netns exec red ip addr add 192.168.15.1/24 dev veth-red
+ip netns exec red ip link set veth-red up
+
+# Inside the blue namespace
+ip netns exec blue ip addr add 192.168.15.2/24 dev veth-blue
+ip netns exec blue ip link set veth-blue up
+```
+
+Also, bring up the bridge and host-side interfaces:
+
+```bash
+ip link set veth-red-br up
+ip link set veth-blue-br up
+ip link set vnet0 up
+```
+
+---
+
+### 5. Connect Remaining Namespaces
+
+Follow the same procedure to connect the remaining two namespaces (e.g., **green** and **yellow**) to the `vnet0` bridge, assigning them IP addresses like:
+
+* `192.168.15.3`
+* `192.168.15.4`
+
+---
+
+### Final Result
+
+All four namespaces are now connected to the internal Linux bridge `vnet0` and can communicate with each other over the **192.168.15.0/24** network:
+
+* red: `192.168.15.1`
+* blue: `192.168.15.2`
+* green: `192.168.15.3`
+* yellow: `192.168.15.4`
+
+They behave just like physical hosts connected through a common switch.
+
+<img width="544" alt="image" src="https://github.com/user-attachments/assets/7551e8c5-c8aa-424a-b89b-39333d7feb57" />
+
+---
+
+<img width="551" alt="image" src="https://github.com/user-attachments/assets/9d989373-17ca-4f35-b64d-3e9487156aaf" />
+
