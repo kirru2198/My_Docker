@@ -408,4 +408,157 @@ With all this in place, your namespaces can now successfully communicate with ex
 <img width="537" alt="image" src="https://github.com/user-attachments/assets/a9587e6b-ac4a-4901-b6f7-7934efdcae0e" />
 
 ---
+### Enabling NAT for Namespace Internet Access
 
+<img width="535" alt="image" src="https://github.com/user-attachments/assets/ad55bdc2-f33a-4f06-876e-0cebb1e87e22" />
+<img width="535" alt="image" src="https://github.com/user-attachments/assets/e4da16c1-1c45-4b66-b578-a7bb9608ba73" />
+
+---
+
+To allow our **namespaces** to reach the **outside world**, we need to enable **NAT (Network Address Translation)** on the **host**. This ensures that any packet leaving the private network appears to originate from the host itself, rather than from inside a namespace.
+
+---
+
+### Step 1: Configure NAT Using `iptables`
+
+We use the `iptables` command to masquerade the source address of packets coming from the namespace network (`192.168.15.0/24`) and going out through the host’s LAN interface (e.g., `eth0`):
+
+```bash
+iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o eth0 -j MASQUERADE
+```
+
+> Replace `eth0` with your actual LAN interface name (you can find it using `ip link`).
+
+This rule tells the system to **rewrite the source IP** of packets from the private network to the **host’s LAN IP** (e.g., `192.168.1.2`). This way, devices outside your host think the traffic came from the host itself—not from an internal namespace.
+
+---
+
+### Step 2: Enable IP Forwarding
+
+Next, we must enable IP forwarding on the host so that it can route packets between its interfaces:
+
+```bash
+echo 1 > /proc/sys/net/ipv4/ip_forward
+```
+
+To make this change permanent, add the following line to `/etc/sysctl.conf`:
+
+```conf
+net.ipv4.ip_forward = 1
+```
+
+Then apply it with:
+
+```bash
+sysctl -p
+```
+
+---
+
+### Step 3: Add a Default Gateway Inside the Namespace
+
+Let’s say you try to ping an **external server** (e.g., `8.8.8.8`) from the **blue namespace**. You may see the message:
+
+```
+Network is unreachable
+```
+
+Why? Because the namespace's routing table only has a route for the `192.168.1.0/24` network, but **no route to the Internet**.
+
+To fix this, you need to add a **default gateway** in the namespace that points to the host (which acts as the gateway). For example, assuming the host's bridge IP is `192.168.15.5`:
+
+```bash
+ip netns exec blue ip route add default via 192.168.15.5
+```
+
+This tells the namespace:
+
+> “For any destination not explicitly defined in the routing table, send the traffic to the gateway at `192.168.15.5`.”
+
+---
+
+### Final Result
+
+With the steps above completed:
+
+* The **namespaces** route all outbound traffic to the **host**.
+* The **host** uses **NAT** to forward traffic to the Internet.
+* The host **replaces the source IP** in outgoing packets, allowing external servers to reply.
+
+As a result, **your namespaces can now access the Internet**, just like any device behind a home router.
+
+---
+### External Connectivity to Namespaces
+
+<img width="539" alt="image" src="https://github.com/user-attachments/assets/a12ee3b1-57a6-4964-bfe7-218357f2a451" />
+
+<img width="535" alt="image" src="https://github.com/user-attachments/assets/53541807-09d2-4535-b98d-9180e22fda68" />
+
+---
+
+Let’s now talk about how to allow access from the **outside world** to services running **inside a namespace**.
+
+Imagine your **blue namespace** is hosting a **web application on port 80**. Currently, this namespace is part of a **private internal network** (`192.168.15.0/24`). That means:
+
+* Only the **host system** can access this web application.
+* If another machine on the LAN (e.g., `192.168.1.3`) tries to access the namespace's private IP, it will **fail**—because that private IP is **not routable** from outside the host.
+
+---
+
+### Two Options for Enabling External Access
+
+There are two primary ways to enable access to a private namespace from outside:
+
+---
+
+#### **Option 1: Route the Private Network**
+
+You could configure the external host (e.g., `192.168.1.3`) with a **static route**, telling it how to reach the private network.
+
+For example:
+
+```bash
+ip route add 192.168.15.0/24 via 192.168.1.2
+```
+
+This command means:
+
+> “To reach the private network `192.168.15.0/24`, send packets to `192.168.1.2` (the host system).”
+
+But this method **requires configuration on every external host** and **exposes the internal network**, which is not ideal for security and scalability reasons. So let’s skip this.
+
+---
+
+#### **Option 2: Use Port Forwarding with iptables (Recommended)**
+
+Instead of exposing the entire private network, we can **forward a specific port** from the host to the namespace using `iptables`.
+
+For example, to forward traffic coming to port 80 on the **host's LAN IP** (`192.168.1.2`) to the **blue namespace** at `192.168.15.2:80`, use:
+
+```bash
+iptables -t nat -A PREROUTING -p tcp -d 192.168.1.2 --dport 80 -j DNAT --to-destination 192.168.15.2:80
+iptables -A FORWARD -p tcp -d 192.168.15.2 --dport 80 -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
+```
+
+This does two things:
+
+1. **PREROUTING rule**: Redirects incoming traffic on port 80 to the namespace IP and port.
+2. **FORWARD rule**: Allows that forwarded traffic to actually pass through.
+
+This approach allows you to:
+
+* Keep your internal network private
+* Let outside clients access specific services running inside namespaces
+
+---
+
+### Summary
+
+* Namespaces are on a private network and not directly reachable from outside.
+* You have two options to allow access:
+
+  1. Add a **static route** to expose the private network (not recommended).
+  2. Use **port forwarding** via `iptables` to expose specific services (recommended).
+* With **port forwarding**, the host handles incoming traffic and routes it internally to the correct namespace/service.
+
+---
