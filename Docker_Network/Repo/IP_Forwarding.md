@@ -1,3 +1,7 @@
+
+<img width="548" alt="image" src="https://github.com/user-attachments/assets/6e477d25-20fb-4efb-ae81-f540014d8ad2" />
+
+
 Great question! Let’s break down the setup shown in the second image and explain how the LAN (192.168.1.0/24) and the virtual network (192.168.15.0/24) are able to **communicate** with each other, even though they belong to **different subnets**.
 
 ---
