@@ -262,7 +262,6 @@ ip -n red link set veth-red up
 ip -n blue link set veth-blue up
 ip link set vnet0 up
 ```
-
 ---
 
 ### 5. Connect Remaining Namespaces
@@ -319,6 +318,94 @@ The **only gateway** to the outside world is the host's physical Ethernet interf
 To allow internet access for the namespaces, you would need to configure **NAT (Network Address Translation)** or use **IP forwarding**.
 
 <img width="533" alt="image" src="https://github.com/user-attachments/assets/cd8d4424-cde1-4ad8-8ed2-5f3498a4e793" />
+
+---
+
+### Connecting the Bridge Network to the LAN
+
+Let’s say you want the **namespaces**, which are on a private network (`192.168.15.0/24`), to reach another host on your **LAN**—for example, a device with the IP address `192.168.1.3`.
+
+Your **host system** has two interfaces:
+
+* One connected to the private bridge network (`192.168.15.5`)
+* Another connected to the external LAN (`192.168.1.2`)
+
+Now let’s say you try to ping `192.168.1.3` from **inside the blue namespace**. Here's what happens:
+
+1. The namespace sees that `192.168.1.3` is not on its local network (`192.168.15.0/24`).
+2. It checks its routing table for a way to reach the `192.168.1.0/24` network.
+3. Since there is **no route** configured to reach that network, the ping fails with a **"Network unreachable"** error.
+
+---
+
+### Adding a Route to the External Network
+
+To fix this, you need to **add a route** to the routing table in the namespace. But for that, the namespace needs a **gateway**—a device that has access to **both networks**.
+
+So, what acts as the gateway?
+
+Your **host** system!
+
+* It has an interface on the **bridge network** (`192.168.15.5`)
+* And it also has an interface on the **LAN** (`192.168.1.2`)
+
+This makes the host a perfect **gateway** between the two networks.
+
+---
+
+### Step-by-Step: Add a Route in the Namespace
+
+From the **blue namespace**, run:
+
+```bash
+ip netns exec blue ip route add 192.168.1.0/24 via 192.168.15.5
+```
+
+This command tells the blue namespace:
+
+> “To reach any IP in the `192.168.1.0/24` network, send packets to the gateway at `192.168.15.5`.”
+
+**Important:**
+You must use the **IP address that is reachable from the namespace** (i.e., `192.168.15.5`, not `192.168.1.2`), because the namespace only knows about its local `192.168.15.0/24` network.
+
+---
+
+### Still No Response? Enable NAT on the Host
+
+After adding the route, you may be able to send packets out, but still not receive any replies. Why?
+
+Because your **namespaces use private IP addresses** (like `192.168.15.1`) that the external LAN hosts don’t know how to reply to.
+
+To fix this, you need to enable **NAT (Network Address Translation)** on your host so that it **rewrites the source IP** of packets going out to the LAN, using its own public-facing IP (`192.168.1.2`).
+
+Here’s how you can do that:
+
+1. **Enable IP forwarding**:
+
+```bash
+echo 1 > /proc/sys/net/ipv4/ip_forward
+```
+
+2. **Set up NAT using iptables**:
+
+```bash
+iptables -t nat -A POSTROUTING -s 192.168.15.0/24 -o eth0 -j MASQUERADE
+```
+
+> Replace `eth0` with the actual name of your LAN interface (you can check with `ip link`).
+
+---
+
+### Final Summary
+
+* Your **host** acts as a **gateway** between the namespaces (`192.168.15.0/24`) and the LAN (`192.168.1.0/24`).
+* You **add a route** in each namespace pointing to the host’s **bridge IP** as the gateway.
+* You **enable NAT** on the host to allow return traffic from the LAN.
+* You **enable IP forwarding** so packets can flow between interfaces.
+
+With all this in place, your namespaces can now successfully communicate with external hosts on the LAN like `192.168.1.3`.
+
+<img width="537" alt="image" src="https://github.com/user-attachments/assets/a9587e6b-ac4a-4901-b6f7-7934efdcae0e" />
 
 ---
 
