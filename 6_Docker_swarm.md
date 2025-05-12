@@ -170,7 +170,7 @@ When Docker Swarm is initialized, an overlay network is automatically created to
 
 ### What is Multi-Stage Build?
 
-A **multi-stage build** in Docker allows you to define multiple `FROM` instructions in a Dockerfile. This helps optimize images by separating the build environment from the runtime environment, making the final image smaller and more efficient.
+A **multi-stage build** in Docker allows you to define multiple `FROM` instructions in a Dockerfile. This helps optimize (= make the image better and more useful) images by separating the build environment from the runtime environment, making the final image smaller and more efficient.
 
 ### Example:
 
